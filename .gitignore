@@ -2,3 +2,5 @@ venv/
 __pycache__/
 *.pyc
 data/*.m4a
+.DS_Store
+.idea/*
