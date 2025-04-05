@@ -1,13 +1,20 @@
 # src/renamer.py
 
 import os
+from typing import Dict, Optional, Union
 
 
-def sanitize_string(input_str):
+def sanitize_string(input_str: str) -> str:
     """
     Replace all spaces with underscores and remove special characters.
     We'll allow letter, digits, and underscores.
     Everything else is stripped out.
+    
+    Args:
+        input_str: The string to sanitize
+        
+    Returns:
+        A sanitized string with spaces replaced by underscores and special characters removed
     """
     if not input_str:
         return ""
@@ -24,11 +31,18 @@ def sanitize_string(input_str):
     return result
 
 
-def generate_new_filename(metadata, original_path):
+def generate_new_filename(metadata: Dict[str, str], original_path: str) -> str:
     """
     Generate a new filename following:
     {ARTIST} {ALBUM} {TRACK_NUMBER} {TRACK_NAME}.{EXTENSION}
     Where each segment is sanitized, and TRACK_NUMBER is zero-padded to 2 digits.
+    
+    Args:
+        metadata: Dictionary containing music metadata (Artist, Album, Track No., Title)
+        original_path: Original file path to extract extension
+        
+    Returns:
+        A new filename formatted according to the specified pattern
     """
 
     artist = metadata.get("Artist") or "Unknown"
@@ -53,10 +67,18 @@ def generate_new_filename(metadata, original_path):
     return filename
 
 
-def rename_file(original_path, new_filename, dry_run=False):
+def rename_file(original_path: str, new_filename: str, dry_run: bool = False) -> Optional[str]:
     """
     Rename file at original_path to new_filename (no path included).
     If dry_run is True, only print out the action without performing the rename.
+    
+    Args:
+        original_path: Path to the original file
+        new_filename: New filename to use (without path)
+        dry_run: If True, only print what would happen without actually renaming
+        
+    Returns:
+        The new path if successful, None if the operation failed or was skipped
     """
 
     dir_name = os.path.dirname(original_path)
