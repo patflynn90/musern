@@ -1,7 +1,6 @@
 # src/renamer.py
 
 import os
-import re
 
 
 def sanitize_string(input_str):
@@ -13,11 +12,16 @@ def sanitize_string(input_str):
     if not input_str:
         return ""
 
+    # Replace spaces with underscores
     temp = input_str.replace(" ", "_")
-
-    temp = re.sub(r"[^A-Za-z0-9_]+", "", temp)
-
-    return temp
+    
+    # Keep only alphanumeric characters and underscores
+    result = ""
+    for char in temp:
+        if char.isalnum() or char == "_":
+            result += char
+            
+    return result
 
 
 def generate_new_filename(metadata, original_path):
