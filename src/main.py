@@ -2,12 +2,17 @@
 
 import argparse
 import os
+from typing import Optional, Dict, Any, NoReturn
 
 from src.audio_processor import get_audio_metadata
 from src.renamer import generate_new_filename, rename_file
 
 
-def main():
+def main() -> None:
+    """
+    Main entry point for the application.
+    Sets up command-line argument parsing and dispatches to appropriate handlers.
+    """
     parser = argparse.ArgumentParser(
         prog="musern", description="Manage audio metadata and rename audio files."
     )
@@ -40,7 +45,13 @@ def main():
         parser.print_help()
 
 
-def handle_info_command(file_path):
+def handle_info_command(file_path: str) -> None:
+    """
+    Handle the 'info' subcommand by displaying metadata for the specified audio file.
+    
+    Args:
+        file_path: Path to the audio file to extract metadata from
+    """
     metadata = get_audio_metadata(file_path)
     if metadata:
         for key, value in metadata.items():
@@ -49,7 +60,14 @@ def handle_info_command(file_path):
         print("Failed to extract metadata.")
 
 
-def handle_rename_command(file_path, dry_run):
+def handle_rename_command(file_path: str, dry_run: bool) -> None:
+    """
+    Handle the 'rename' subcommand by renaming the specified audio file based on its metadata.
+    
+    Args:
+        file_path: Path to the audio file to rename
+        dry_run: If True, only preview the renaming without actually doing it
+    """
     metadata = get_audio_metadata(file_path)
     if not metadata:
         print("Failed to extract metadata. Cannot rename.")
